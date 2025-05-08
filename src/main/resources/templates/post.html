@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+          crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <script>
+        function editComment(id) {
+            const comment = document.getElementById("comment" + id);
+            let messageForm = document.getElementById("messageForm" + id);
+            console.log("messageForm" + id + "    " + messageForm.id)
+
+            const divTextarea = document.createElement("div");
+            divTextarea.className = "form-floating";
+            divTextarea.style = "width: 100%";
+
+            const textarea = document.createElement("textarea");
+            textarea.innerHTML = comment.innerText;
+            textarea.name = "message";
+            textarea.style = "height: 100%";
+            textarea.form = messageForm;
+            textarea.placeholder = "Leave a comment here";
+            textarea.id = "floatingTextarea2";
+            textarea.className = "form-control";
+            textarea.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" && event.ctrlKey) {
+                    messageForm.submit()
+                }
+            })
+
+
+            const label = document.createElement("label");
+            label.for = "floatingTextarea2";
+            label.innerHTML = "Comment";
+
+            divTextarea.appendChild(textarea);
+            divTextarea.appendChild(label);
+
+            comment.parentNode.replaceChild(divTextarea, comment);
+
+            const button = document.getElementById(id);
+            button.remove();
+
+
+            const newButton = document.createElement("button")
+            newButton.innerHTML = "Save"
+            newButton.className = "btn btn-outline-secondary button-confirm-edit"
+
+            newButton.type = "submit"
+            newButton.disabled = true
+
+            textarea.onchange = function () {
+                newButton.disabled = false
+                newButton.className = "btn btn-outline-success button-confirm-edit"
+            }
+
+
+            messageForm.appendChild(newButton)
+        }
+    </script>
+    <style>
+        .div-likes {
+            justify-content: center;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: nowrap;
+        }
+
+        .p-comment-created {
+            margin: 0;
+            padding: 0;
+            font-size: x-small;
+        }
+
+        .button-add-comment {;
+        }
+
+        .div-comment-group-button {
+            white-space: nowrap;
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            gap: 4px;
+            margin-left: 5px;
+        }
+
+        .div-button-add-comment {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body style="background-color: var(--main-color)">
+<header class="header">
+    <div class="header-form-search header-publish">
+        <a class="btn btn-outline-primary button" th:href="@{/posts}">Close</a>
+    </div>
+</header>
+
+<main class="card" style="margin: 100px auto 30px; max-width: var(--content-width); padding: 15px;">
+    <div style="display: flex ;flex-direction: column;">
+        <div>
+            <form style="float: right; margin: 5px;"
+                  method="post"
+                  th:action="@{/posts/{postId}/delete(postId=${post.id})}"
+            >
+                <button class="btn btn-sm btn-outline-danger" type="submit">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+            <form style="float: right; margin: 5px;"
+                  method="get"
+                  th:action="@{/posts/{postId}/edit(postId=${post.id})}"
+            >
+                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </form>
+        </div>
+        <h2 style="text-align: center;" th:text="${post.title}"></h2>
+    </div>
+
+    <div class="card-div-image" style="text-align: center;">
+        <img th:src="@{/images/{pictureUrl}(pictureUrl=${post.image})}"
+             onerror="this.src='/myblog/img/birthday.jpg'"
+             class="rounded-start card-img"
+             alt="promo image for post"
+             decoding="async"
+             loading="eager">
+    </div>
+    <div class="div-likes">
+        <form th:action="@{/posts/{id}/like(id=${post.id})}" method="post">
+            <button type="submit" class="btn btn-sm btn-outline-success" name="like" value="true">
+                <i class="bi bi-suit-heart"></i>
+            </button>
+            <span th:text="${post.likes}"></span>
+            <button type="submit" class="btn btn-sm btn-outline-danger" name="like" value="false">
+                <i class="bi bi-heartbreak"></i>
+            </button>
+        </form>
+    </div>
+    <div>
+        <div style="margin: 15px;">
+            <span style="margin: 6px" th:each="tag : ${post.tags}" th:text="${'#'+tag.title}"/>
+        </div>
+        <p style="text-indent: 20px; padding: 0 20px;" th:each="part : ${post.textParts}" th:text="${part}"></p>
+    </div>
+    <hr>
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed"
+                        style="margin-bottom: 30px;"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                        th:text="${'Comments(' + #lists.size(post.comments)}+')'">
+                </button>
+            </h2>
+            <div id="flush-collapseOne"
+                 class="accordion-collapse collapse"
+                 aria-labelledby="flush-headingOne"
+                 data-bs-parent="#accordionFlushExample"
+            >
+                <div class="accordion-body div-comments" th:each="comment : ${post.comments}">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <p class="p-comment-created" th:text="${comment.created}"></p>
+                        <div th:id="groupButton+${comment.id}"
+                             class="div-comment-group-button"
+                        >
+                            <button th:id="${comment.id}"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    onclick="editComment(this.id)">
+                                <i th:id="${'iconEdit'+comment.id}" class="bi bi-pencil"></i>
+                            </button>
+                            <form name="deleteForm"
+                                  action="#"
+                                  th:action="@{/posts/{postId}/comments/{comId}/delete(postId=${post.id},comId=${comment.id})}"
+                                  method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <form
+                            action="#"
+                            th:id="${'messageForm'+comment.id}"
+                            method="post"
+                            th:action="@{/posts/{postId}/comments/{comId}(postId=${post.id},comId=${comment.id})}"
+                    >
+                        <span th:id="${'comment'+comment.id}" th:text="${comment.message}"></span>
+                    </form>
+
+                </div>
+                <form action="#"
+                      th:action="@{/posts/{postId}/comments(postId=${post.id})}"
+                      style="margin-top: 20px"
+                      method="post">
+                    <div class="form-floating">
+                        <textarea class="form-control"
+                                  placeholder="Leave a comment here"
+                                  id="newComment"
+                                  style="height: 100px"
+                                  name="message"
+                                  required
+                        ></textarea>
+                        <label for="newComment">New Comment...</label>
+                    </div>
+                    <div class="div-button-add-comment">
+                        <button class="btn btn-outline-primary" type="submit">Add Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+</body>
+</html>

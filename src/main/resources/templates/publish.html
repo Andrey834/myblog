@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Post...</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+          crossorigin="anonymous">
+</head>
+<body>
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100svh; background-color: var(--main-color)">
+    <header class="header">
+        <div class="header-form-search header-publish">
+            <a class="btn btn-outline-primary button" type="submit" th:href="@{/posts}">Close</a>
+        </div>
+    </header>
+    <div style="width: var(--content-width); margin: 100px auto 0;">
+        <form class="card"
+              style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap:
+        20px; padding: 30px;"
+              action="#"
+              th:action="@{${id==null ? '/posts/add' : '/posts/' + id +'/edit'}}"
+              th:object="${post}"
+              method="post"
+              enctype="multipart/form-data">
+            <img src="#" class="rounded" alt="default" id="promo" style="height: 0; width: 400px;">
+            <span id="imageSize"></span>
+            <div class="input-group">
+                <span class="input-group-text"
+                      style="width: 10%;
+                justify-content: center;
+                 align-items: center;
+                min-width: 90px;">Title
+                </span>
+                <input class="form-control"
+                       aria-label="With textarea"
+                       th:value="${post.title==null ? '' : post.title}"
+                       th:field="${post.title}"
+                       autofocus
+                       autocapitalize="on"
+                       autocomplete="off"
+                       required/>
+            </div>
+            <ul th:each="err : ${#fields.errors('title')}">
+                <li th:text="${err}" style="color: #ee3333"/>
+            </ul>
+            <div class="input-group">
+                <span class="input-group-text"
+                      style="width: 10%; justify-content: center; align-items: center;min-width: 90px;">Text</span>
+                <textarea class="form-control"
+                          aria-label="With textarea"
+                          th:value="${post.text==null ? '' : post.text}"
+                          th:field="${post.text}"
+                          autocapitalize="on"
+                          autocomplete="off"
+                          required
+                          style="height: 300px"
+                ></textarea>
+            </div>
+            <ul th:each="err : ${#fields.errors('text')}">
+                <li th:text="${err}" style="color: #ee3333"/>
+            </ul>
+            <div class="input-group">
+                <span class="input-group-text"
+                      style="width: 10%; justify-content: center; align-items: center;min-width: 90px;">Tags</span>
+                <input class="form-control"
+                       aria-label="With textarea"
+                       th:value="${post.tags==null ? '' : post.tags}"
+                       th:field="${post.tags}"
+                       required/>
+            </div>
+            <ul th:each="err : ${#fields.errors('tags')}">
+                <li th:text="${err}" style="color: #ee3333"/>
+            </ul>
+            <div class="input-group mb-3">
+                <input type="file"
+                       id="image"
+                       class="form-control"
+                       th:field="${post.image}"
+                       accept="image/png, image/gif, image/jpeg"
+                       multiple
+                       required/>
+            </div>
+            <ul th:each="err : ${#fields.errors('image')}">
+                <li th:text="${err}" style="color: #ee3333"/>
+            </ul>
+            <div>
+                <button class="btn btn-outline-warning button" type="reset" id="reset" style="margin-right:
+                30px">
+                    Reset
+                </button>
+                <button class="btn btn-outline-success button" type="submit" id="submit"
+                        th:text="${id==null ? 'Publish' : 'Update'}"></button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    document.querySelector('button[id="reset"]').onclick = () => {
+        const promoSelector = document.querySelector('img[id="promo"]');
+        promoSelector.style.height = '0';
+
+        const imageSizeSelector = document.querySelector('span[id="imageSize"]');
+        imageSizeSelector.innerHTML = '';
+
+    };
+
+    document.querySelector('input[id="image"]').onchange = event => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const promoSelector = document.querySelector('img[id="promo"]');
+            promoSelector.src = e.target.result;
+
+            const imageSizeSelector = document.querySelector('span[id="imageSize"]');
+            const element = document.getElementById("image");
+            let size = element.files[0].size / 1024;
+            let suffix = "kb"
+
+            if (size > 1000) {
+                size = size / 1024
+                suffix = "mb"
+            }
+
+            size = Math.floor(size * 100) / 100
+
+            if (suffix === "mb" && size > 10) {
+                imageSizeSelector.style.color = "#c1121f"
+                const submitButton = document.getElementById("submit")
+                submitButton.setAttribute("disabled", "disabled");
+            }
+
+            promoSelector.style.height = '400px';
+            imageSizeSelector.innerHTML = 'Image size: ' + size + suffix;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+</body>
