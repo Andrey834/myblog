@@ -5,9 +5,9 @@ spring:
     virtual:
       enabled: true
   datasource:
-    url: ${APP_BLOG_PG_URL}
-    username: ${APP_BLOG_PG_USERNAME}
-    password: ${APP_BLOG_PG_PASSWORD}
+    url: jhfgjfgjhgfjfghj
+    username: jhgfjfhgjfghj
+    password: jhgfjfghj
   liquibase:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
@@ -19,5 +19,3 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 20MB
-server:
-  port: ${APP_BLOG_PORT}

@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tag-table
+      author: Andrey M
+      context: develop
+      changes:
+        - createTable:
+            tableName: tag
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true

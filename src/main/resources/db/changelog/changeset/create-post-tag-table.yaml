@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-post_tag-table
+      author: Andrey M
+      context: develop
+      changes:
+        - createTable:
+            tableName: post_tag
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_post_tag_post_id
+                    referencedTableName: post
+                    referencedColumnNames: id
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_post_tag_tag_id
+                    referencedTableName: tag
+                    referencedColumnNames: id
+                    deleteCascade: true
+                    nullable: false
