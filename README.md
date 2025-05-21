@@ -3,27 +3,30 @@
 ## Technologies used
 
 * Frontend – Thymeleaf.
-* Backend  – Java 16, Spring Framework 6.
-* Database – Postgresql.
-* Test     - JUnit 5, TestContainers(Postgresql)
+* Backend – Java 21, Spring Boot 3.4.5
+* Database – Postgresql, Liquibase.
+* Test - JUnit 5, TestContainers(Postgresql)
 
 ## Installation guide
 
-Set environments in application.properties
-* URL DATABASE -> spring.datasource.url
-* USERNAME DATABASE -> spring.datasource.username
-* PASSWORD DATABASE -> spring.datasource.password
-* DIR FOR IMAGE -> app.image.dir
+Set environments
 
-Install Java 21 and maven and run:
+* APP_BLOG_NAME -> Application name
+* APP_BLOG_PORT -> Application port
+* APP_BLOG_PG_USERNAME -> Postgresql username
+* APP_BLOG_PG_PASSWORD -> Postgresql password
+* APP_BLOG_PG_PORT -> Postgresql external port
+
+## Run application
+
+Install Docker with Compose:
 
 ```bash
-mvn package
-cd target
-cp myblog.war ${TOMCAT_HOME}/libexec/webapps/
+docker compose up -d --build
 ```
 
 ### Key Features
+
 * **Post Creation** - Easily create new blog posts with rich text editing, image uploads, and formatting options
 * **Content Management** - Organize your posts, edit them anytime, and delete when necessary
 * **Engagement Tools** - Allow readers to like your posts and engage with your content
