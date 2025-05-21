@@ -1,0 +1,44 @@
+services:
+  pg-blog:
+    image: postgres:17.5-alpine
+    container_name: pg-blog
+    restart: always
+    networks:
+      - my-blog
+    volumes:
+      - /var/docker/postgres/auth:/var/lib/postgresql/data/
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
+    environment:
+      - POSTGRES_DB=myblog
+      - POSTGRES_USER=${APP_BLOG_PG_USERNAME}
+      - POSTGRES_PASSWORD=${APP_BLOG_PG_PASSWORD}
+      - POSTGRES_HOST_AUTH_METHOD=md5
+    ports:
+      - ${APP_BLOG_PG_PORT}:5432
+
+  my-blog:
+    build: .
+    image: ${APP_BLOG_NAME}
+    container_name: ${APP_BLOG_NAME}
+    restart: always
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:${APP_BLOG_PORT}/actuator/health || exit 1
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 6
+    ports:
+      - ${APP_BLOG_PORT}:${APP_BLOG_PORT}
+    env_file:
+      - .env
+    networks:
+      - my-blog
+    environment:
+      APP_BLOG_NAME: ${APP_BLOG_NAME}
+      APP_BLOG_PORT: ${APP_BLOG_PORT}
+      APP_BLOG_PG_URL: jdbc:postgresql://pg-blog:5432/myblog
+      APP_BLOG_PG_USERNAME: ${APP_BLOG_PG_USERNAME}
+      APP_BLOG_PG_PASSWORD: ${APP_BLOG_PG_PASSWORD}
+
+networks:
+  my-blog:

@@ -1,0 +1,9 @@
+ru/yandex/myblog/configuration/ServiceConfig.class
+ru/yandex/myblog/configuration/WebConfiguration.class
+ru/yandex/myblog/repository/JdbcNativePostRepositoryTest.class
+ru/yandex/myblog/controller/PostControllerTest.class
+ru/yandex/myblog/configuration/DataSourceConfiguration.class
+ru/yandex/myblog/repository/JdbcNativeCommentRepositoryTest.class
+ru/yandex/myblog/service/PostServiceImplTest.class
+ru/yandex/myblog/controller/CommentControllerTest.class
+ru/yandex/myblog/controller/ImageControllerTest.class

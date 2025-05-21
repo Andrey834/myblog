@@ -33,7 +33,7 @@
     <div id="post" class="card-div card" th:each="post : ${posts}">
         <div class="card-div-image">
             <img th:src="'images/' + ${post.image}"
-                 onerror="this.src='/myblog/img/promo.jpg'"
+                 onerror="this.src='/img/promo.jpg'"
                  class="rounded-start card-img"
                  alt="promo image for post"
                  decoding="async"

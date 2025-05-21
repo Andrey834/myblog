@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-comment-table
+      author: Andrey M
+      context: develop
+      changes:
+        - createTable:
+            tableName: comment
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_comment_post_id
+                    referencedTableName: post
+                    referencedColumnNames: id
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp()

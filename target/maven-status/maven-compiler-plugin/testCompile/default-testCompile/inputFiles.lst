@@ -1,0 +1,16 @@
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/controller/CommentControllerTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/containers/PostgresTestContainer.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/service/PostServiceImplTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/repository/JdbcNativePostTagRepositoryTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/mapper/PostMapperTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/service/CommentServiceImplTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/repository/JdbcNativeTagRepositoryTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/configuration/WebConfiguration.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/configuration/DataSourceConfiguration.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/configuration/ServiceConfig.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/service/TagServiceImplTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/controller/PostControllerTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/configuration/ControllerConfig.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/repository/JdbcNativeCommentRepositoryTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/controller/ImageControllerTest.java
+/Users/moylashov/Documents/middle/myblog/src/test/java/ru/yandex/myblog/repository/JdbcNativePostRepositoryTest.java

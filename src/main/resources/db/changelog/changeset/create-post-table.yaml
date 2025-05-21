@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-post-table
+      author: Andrey M
+      context: develop
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(5000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes
+                  type: bigint
+                  constraints:
+                    nullable: false
+                  defaultValue: '0'
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp()
